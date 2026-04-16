@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 def scrape_jobs(keyword="python"):
-    print(f"\n🔍 Searching jobs for: {keyword}")
+    print(f"\n Searching jobs for: {keyword}")
     print("-" * 50)
 
     url = f"https://www.timesjobs.com/candidate/job-search.html?searchType=personalizedSearch&from=submit&txtKeywords={keyword}&txtLocation="
@@ -16,12 +16,12 @@ def scrape_jobs(keyword="python"):
     response = requests.get(url, headers=headers, timeout=10)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Step 2: Find all job cards
+    # Step 2: find all job cards
     job_cards = soup.find_all("li", class_="clearfix job-bx wht-shd-bx")
 
     jobs = []
 
-    # Step 3: Pull data from each card
+    # Step 3: pull data from each card
     for card in job_cards[:10]:  # Only first 10 jobs
         try:
             title   = card.find("h2").text.strip()
@@ -36,11 +36,11 @@ def scrape_jobs(keyword="python"):
                 "Posted"    : posted
             })
 
-            # Print each job clearly
+            # print each job clearly
             print(f"✅ {title}")
-            print(f"   🏢 {company}")
-            print(f"   🛠  {skills}")
-            print(f"   📅 {posted}")
+            print(f"    {company}")
+            print(f"    {skills}")
+            print(f"   {posted}")
             print()
 
         except:
@@ -51,9 +51,9 @@ def scrape_jobs(keyword="python"):
         df = pd.DataFrame(jobs)
         filename = f"{keyword}_jobs.csv"
         df.to_csv(filename, index=False)
-        print(f"💾 Saved {len(jobs)} jobs to '{filename}'")
+        print(f" Saved {len(jobs)} jobs to '{filename}'")
     else:
         print("❌ No jobs found. Try a different keyword.")
 
-# ▶️ RUN HERE — just change the keyword
+#  RUN HERE — just change the keyword
 scrape_jobs("python")
